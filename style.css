@@ -1,0 +1,338 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #f0f2f5;
+    color: #333;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* TELA DE LOGIN */
+.login-container {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
+}
+
+.login-box {
+    background: #fff;
+    padding: 2.5rem;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 380px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    text-align: center;
+}
+
+.login-box h2 {
+    margin-bottom: 0.5rem;
+    color: #1e3c72;
+}
+
+.login-box p {
+    color: #666;
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+}
+
+.error-msg {
+    color: #d9534f;
+    margin-top: 10px;
+    font-size: 0.85rem;
+}
+
+.hint {
+    display: block;
+    margin-top: 15px;
+    color: #888;
+}
+
+/* LAYOUT PRINCIPAL */
+#app-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+.sidebar {
+    width: 260px;
+    background-color: #1e3c72;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem 1rem;
+}
+
+.sidebar .brand {
+    text-align: center;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    margin-bottom: 1.5rem;
+}
+
+.sidebar nav {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.nav-btn {
+    background: transparent;
+    border: none;
+    color: #cfd8dc;
+    padding: 0.85rem 1rem;
+    text-align: left;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    transition: 0.2s;
+}
+
+.nav-btn:hover, .nav-btn.active {
+    background-color: #2a5298;
+    color: #fff;
+    font-weight: bold;
+}
+
+.main-content {
+    flex: 1;
+    padding: 2rem;
+    overflow-y: auto;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #e0e4e8;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* CARDS DO PAINEL */
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.card {
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    border-left: 5px solid #2a5298;
+}
+
+.card.card-alert {
+    border-left-color: #d9534f;
+}
+
+.card h3 {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 0.5rem;
+}
+
+.stat-number {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #1e3c72;
+}
+
+.card-alert .stat-number {
+    color: #d9534f;
+}
+
+/* FORMULÁRIOS E TABELAS */
+.panel-box {
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    margin-bottom: 2rem;
+}
+
+.panel-box h3 {
+    margin-bottom: 1.2rem;
+    color: #1e3c72;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+}
+
+.full-width {
+    grid-column: 1 / -1;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    margin-bottom: 0.8rem;
+}
+
+.input-group label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+    color: #444;
+}
+
+.input-group input, .input-group select {
+    padding: 0.65rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 0.95rem;
+}
+
+button {
+    padding: 0.7rem 1.2rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+.btn-primary { background: #2a5298; color: #fff; }
+.btn-primary:hover { background: #1e3c72; }
+.btn-secondary { background: #6c757d; color: #fff; }
+.btn-danger { background: #d9534f; color: #fff; }
+.btn-success { background: #28a745; color: #fff; }
+.btn-sm { padding: 0.4rem 0.7rem; font-size: 0.8rem; }
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 0.5rem;
+}
+
+th, td {
+    padding: 0.85rem;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+th {
+    background-color: #f8f9fa;
+    color: #555;
+    font-size: 0.85rem;
+}
+
+/* STATUS BADGES */
+.badge {
+    padding: 0.3rem 0.6rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: bold;
+}
+
+.badge-ok { background: #d4edda; color: #155724; }
+.badge-late { background: #f8d7da; color: #721c24; }
+.badge-returned { background: #e2e3e5; color: #383d41; }
+
+/* MODAL E CARTEIRINHA */
+.modal {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.library-card {
+    width: 340px;
+    border: 2px solid #1e3c72;
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 0 auto 1.5rem auto;
+    background: #fff;
+    text-align: left;
+}
+
+.card-header {
+    background: #1e3c72;
+    color: #fff;
+    padding: 0.8rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card-body {
+    padding: 1rem;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.card-photo {
+    width: 65px;
+    height: 80px;
+    background: #e9ecef;
+    border: 1px solid #ccc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+}
+
+.card-details p {
+    font-size: 0.85rem;
+    margin-bottom: 0.3rem;
+}
+
+.barcode-sim {
+    font-family: 'Courier New', Courier, monospace;
+    letter-spacing: 3px;
+    font-weight: bold;
+    margin-top: 0.5rem;
+    font-size: 1rem !important;
+}
+
+/* ESTILO EXCLUSIVO PARA IMPRESSÃO DA CARTEIRINHA */
+@media print {
+    body * {
+        visibility: hidden;
+    }
+    #printable-card, #printable-card * {
+        visibility: visible;
+    }
+    #printable-card {
+        position: fixed;
+        left: 20px;
+        top: 20px;
+        box-shadow: none;
+    }
+}
