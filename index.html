@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BiblioTech - Sistema Bibliotecário</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- TELA DE LOGIN -->
+    <div id="login-screen" class="login-container">
+        <div class="login-box">
+            <h2>📚 BiblioTech</h2>
+            <p>Acesso Restrito ao Bibliotecário</p>
+            <form id="login-form">
+                <div class="input-group">
+                    <label for="login-user">Usuário</label>
+                    <input type="text" id="login-user" placeholder="admin" required>
+                </div>
+                <div class="input-group">
+                    <label for="login-pass">Senha</label>
+                    <input type="password" id="login-pass" placeholder="1234" required>
+                </div>
+                <button type="submit" class="btn-primary">Entrar</button>
+                <p id="login-error" class="error-msg"></p>
+            </form>
+            <small class="hint">Credenciais padrão: <b>admin</b> / <b>1234</b></small>
+        </div>
+    </div>
+
+    <!-- SISTEMA PRINCIPAL (OCULTO ANTES DO LOGIN) -->
+    <div id="app-container" class="hidden">
+        <!-- Menu Lateral -->
+        <aside class="sidebar">
+            <div class="brand">
+                <h2>📚 BiblioTech</h2>
+            </div>
+            <nav>
+                <button class="nav-btn active" data-target="dashboard">📊 Painel Administrativo</button>
+                <button class="nav-btn" data-target="books">📖 Cadastro de Livros</button>
+                <button class="nav-btn" data-target="users">👥 Usuários e Carteirinhas</button>
+                <button class="nav-btn" data-target="loans">🔄 Empréstimos e Devoluções</button>
+                <button class="nav-btn" data-target="profile">👤 Perfil do Bibliotecário</button>
+            </nav>
+            <button id="logout-btn" class="btn-danger logout">Sair do Sistema</button>
+        </aside>
+
+        <!-- Área de Conteúdo -->
+        <main class="main-content">
+            <header>
+                <h1 id="page-title">Painel Administrativo</h1>
+                <div class="user-info">
+                    <span>Olá, <strong id="header-librarian-name">Bibliotecário</strong></span>
+                </div>
+            </header>
+
+            <!-- ABA: PAINEL ADMINISTRATIVO -->
+            <section id="dashboard" class="tab-content active">
+                <div class="cards-grid">
+                    <div class="card">
+                        <h3>Total de Livros</h3>
+                        <p id="stat-books" class="stat-number">0</p>
+                    </div>
+                    <div class="card">
+                        <h3>Usuários Cadastrados</h3>
+                        <p id="stat-users" class="stat-number">0</p>
+                    </div>
+                    <div class="card">
+                        <h3>Empréstimos Ativos</h3>
+                        <p id="stat-loans" class="stat-number">0</p>
+                    </div>
+                    <div class="card card-alert">
+                        <h3>Devoluções em Atraso</h3>
+                        <p id="stat-overdue" class="stat-number">0</p>
+                    </div>
+                </div>
+
+                <div class="panel-box">
+                    <h3>⚠️ Alertas de Devolução (Atrasados ou Vencendo Hoje)</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Livro</th>
+                                <th>Usuário</th>
+                                <th>Data Prevista</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="alerts-table-body">
+                            <!-- Preenchido via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- ABA: CADASTRO DE LIVROS -->
+            <section id="books" class="tab-content">
+                <div class="panel-box">
+                    <h3>Cadastrar Novo Livro</h3>
+                    <form id="book-form" class="form-grid">
+                        <div class="input-group">
+                            <label>Modo de Cadastro</label>
+                            <select id="book-mode">
+                                <option value="barcode">Com Leitor de Código de Barras (ISBN)</option>
+                                <option value="manual">Sem Leitor (Gerar Código Interno)</option>
+                            </select>
+                        </div>
+                        <div class="input-group" id="barcode-group">
+                            <label for="book-isbn">Código de Barras / ISBN (Bipe aqui)</label>
+                            <input type="text" id="book-isbn" placeholder="Passe o leitor ou digite o ISBN">
+                        </div>
+                        <div class="input-group">
+                            <label for="book-title">Título do Livro</label>
+                            <input type="text" id="book-title" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="book-author">Autor</label>
+                            <input type="text" id="book-author" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="book-qty">Quantidade de Exemplares</label>
+                            <input type="number" id="book-qty" min="1" value="1" required>
+                        </div>
+                        <div class="input-group full-width">
+                            <button type="submit" class="btn-primary">Salvar Livro</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="panel-box">
+                    <h3>Acervo Cadastrado</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Código / ISBN</th>
+                                <th>Título</th>
+                                <th>Autor</th>
+                                <th>Disponíveis</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="books-table-body"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- ABA: USUÁRIOS E CARTEIRINHAS -->
+            <section id="users" class="tab-content">
+                <div class="panel-box">
+                    <h3>Cadastrar Novo Usuário</h3>
+                    <form id="user-form" class="form-grid">
+                        <div class="input-group">
+                            <label for="user-name">Nome Completo</label>
+                            <input type="text" id="user-name" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="user-doc">CPF ou Matrícula</label>
+                            <input type="text" id="user-doc" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="user-phone">Telefone / WhatsApp</label>
+                            <input type="text" id="user-phone" required>
+                        </div>
+                        <div class="input-group full-width">
+                            <button type="submit" class="btn-primary">Cadastrar Usuário</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="panel-box">
+                    <h3>Usuários Cadastrados</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nome</th>
+                                <th>Documento</th>
+                                <th>Telefone</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="users-table-body"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- ABA: EMPRÉSTIMOS E DEVOLUÇÕES -->
+            <section id="loans" class="tab-content">
+                <div class="panel-box">
+                    <h3>Registrar Novo Empréstimo</h3>
+                    <form id="loan-form" class="form-grid">
+                        <div class="input-group">
+                            <label for="loan-user">Selecionar Usuário</label>
+                            <select id="loan-user" required></select>
+                        </div>
+                        <div class="input-group">
+                            <label for="loan-book">Selecionar Livro (ou bipar código)</label>
+                            <select id="loan-book" required></select>
+                        </div>
+                        <div class="input-group">
+                            <label for="loan-return-date">Data Prevista para Devolução</label>
+                            <input type="date" id="loan-return-date" required>
+                        </div>
+                        <div class="input-group full-width">
+                            <button type="submit" class="btn-primary">Confirmar Empréstimo</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="panel-box">
+                    <h3>Controle de Empréstimos e Devoluções</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Usuário</th>
+                                <th>Livro</th>
+                                <th>Empréstimo</th>
+                                <th>Devolução Prevista</th>
+                                <th>Situação</th>
+                                <th>Ação</th>
+                            </tr>
+                        </thead>
+                        <tbody id="loans-table-body"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- ABA: PERFIL DO BIBLIOTECÁRIO -->
+            <section id="profile" class="tab-content">
+                <div class="panel-box">
+                    <h3>Dados do Bibliotecário</h3>
+                    <form id="profile-form" class="form-grid">
+                        <div class="input-group">
+                            <label for="prof-name">Nome de Exibição</label>
+                            <input type="text" id="prof-name" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="prof-user">Login de Acesso</label>
+                            <input type="text" id="prof-user" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="prof-pass">Nova Senha</label>
+                            <input type="password" id="prof-pass" required>
+                        </div>
+                        <div class="input-group full-width">
+                            <button type="submit" class="btn-primary">Atualizar Perfil</button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- MODAL DE IMPRESSÃO DE CARTEIRINHA -->
+    <div id="card-modal" class="modal hidden">
+        <div class="modal-content">
+            <div id="printable-card" class="library-card">
+                <div class="card-header">
+                    <h4>📚 BIBLIOTECH</h4>
+                    <span>Carteira do Leitor</span>
+                </div>
+                <div class="card-body">
+                    <div class="card-photo">👤</div>
+                    <div class="card-details">
+                        <p><strong>Nome:</strong> <span id="card-user-name"></span></p>
+                        <p><strong>Matrícula/CPF:</strong> <span id="card-user-doc"></span></p>
+                        <p><strong>Telefone:</strong> <span id="card-user-phone"></span></p>
+                        <p class="barcode-sim" id="card-user-barcode">*000000*</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-actions no-print">
+                <button onclick="window.print()" class="btn-primary">🖨️ Imprimir Carteirinha</button>
+                <button onclick="closeCardModal()" class="btn-secondary">Fechar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="javascript.js"></script>
+</body>
+</html>
